@@ -1,23 +1,21 @@
 #!/usr/bin/python3
-"""Lockboxes challenge solution"""
+'''A module for working with lockboxes.
+'''
 
 
 def canUnlockAll(boxes):
-    """Check if all boxes can be unlocked"""
-    if not isinstance(boxes, list) or not all(isinstance(item, list) for item in boxes):
-        return False
-
-    num_boxes = len(boxes)
-    visited = [False] * num_boxes
-    visited[0] = True
-
-    def dfs(box: int) -> None:
-        """Depth-first search algorithm"""
-        visited[box] = True
-        for key in boxes[box]:
-            if not visited[key]:
-                dfs(key)
-
-    dfs(0)
-
-    return all(visited)
+    '''Checks if all the boxes in a list of boxes containing the keys
+    (indices) to other boxes can be unlocked given that the first
+    box is unlocked.
+    '''
+    n = len(boxes)
+    seen_boxes = set([0])
+    unseen_boxes = set(boxes[0]).difference(set([0]))
+    while len(unseen_boxes) > 0:
+        boxIdx = unseen_boxes.pop()
+        if not boxIdx or boxIdx >= n or boxIdx < 0:
+            continue
+        if boxIdx not in seen_boxes:
+            unseen_boxes = unseen_boxes.union(boxes[boxIdx])
+            seen_boxes.add(boxIdx)
+    return n == len(seen_boxes)
