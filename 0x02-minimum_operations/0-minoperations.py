@@ -58,3 +58,5 @@ def minOperations(n):
         return counter
     else:
         return 0
+
+# Add a newline character at the end of the file
